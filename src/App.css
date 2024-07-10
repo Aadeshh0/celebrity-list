@@ -17,11 +17,12 @@
 .search-bar {
   width: 100%;
   padding: 12px;
-  margin-bottom: 20px;
+  margin: 20px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f7f7f7;
+  color: black;
 }
 
 .search-bar:focus {
@@ -31,7 +32,7 @@
 }
 
 .accordion-item {
-  width: 100%;
+  width: 720px;
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 10px;
