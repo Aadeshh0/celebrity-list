@@ -13,14 +13,17 @@ interface User {
   description: string;
 }
 
-const AccordionItem: React.FC<{ user: User }> = ({ user }) => {
+const AccordionItem: React.FC<{ user: User, onSave: (user: User) => void, onDelete: (id: string) => void }> = ({ user, onSave, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const toggleAccordion = () => setIsOpen(!isOpen);
-  const toggleEdit = () => setIsEditing(!isEditing);
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+    setEditedUser(user); // Reset editedUser to original user data when toggling edit mode
+  };
 
   const calculateAge = (dateOfBirth: string) => {
     const today = new Date();
@@ -33,13 +36,14 @@ const AccordionItem: React.FC<{ user: User }> = ({ user }) => {
     return age;
   };
 
-  const handleSave = () => {
-    // Implement save logic here
+  const handleSave = (event: React.FormEvent) => {
+    event.preventDefault();
+    onSave(editedUser);
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    // Implement delete logic here
+    onDelete(user.id);
     setShowDeleteDialog(false);
   };
 
@@ -70,8 +74,18 @@ const AccordionItem: React.FC<{ user: User }> = ({ user }) => {
                 <p>{user.description}</p>
               </div>
               <div className="button-group">
-                <button className="edit-button" onClick={toggleEdit}>Edit</button>
-                <button className="delete-button" onClick={() => setShowDeleteDialog(true)}>Delete</button>
+                <button className="edit-button" onClick={toggleEdit}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+                </button>
+                <button className="delete-button" onClick={() => setShowDeleteDialog(true)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e64c4c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-trash-2">
+                    <path d="M3 6h18"/>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                    <line x1="10" x2="10" y1="11" y2="17"/>
+                    <line x1="14" x2="14" y1="11" y2="17"/>
+                  </svg>
+                </button>
               </div>
             </>
           ) : (
@@ -113,16 +127,14 @@ const AccordionItem: React.FC<{ user: User }> = ({ user }) => {
         </div>
       )}
       {showDeleteDialog && (
-         <div className="delete-dialog">
+        <div className="delete-dialog">
           <p>Are you sure you want to delete?</p>
           <div className="button-group">
-          <button className="cancel-button" onClick={() => setShowDeleteDialog(false)}>Cancel</button>
-          <button onClick={handleDelete}>Delete</button>
+            <button className="cancel-button" onClick={() => setShowDeleteDialog(false)}>Cancel</button>
+            <button onClick={handleDelete}>Delete</button>
+          </div>
         </div>
-      </div>
       )}
-
-
     </div>
   );
 };
@@ -138,6 +150,14 @@ const UserList: React.FC = () => {
       .then(data => setUsers(data));
   }, []);
 
+  const handleSave = (updatedUser: User) => {
+    setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
+  };
+
+  const handleDelete = (id: string) => {
+    setUsers(users.filter(user => user.id !== id));
+  };
+
   const filteredUsers = users.filter(user =>
     user.first.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -152,7 +172,7 @@ const UserList: React.FC = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       {filteredUsers.map(user => (
-        <AccordionItem key={user.id} user={user} />
+        <AccordionItem key={user.id} user={user} onSave={handleSave} onDelete={handleDelete} />
       ))}
     </div>
   );

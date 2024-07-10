@@ -126,14 +126,34 @@
 }
 
 .edit-button {
-  background-color: #4CAF50;
-  color: white;
+  background-color: white;
 }
 
 .delete-button {
-  background-color: #f44336;
-  color: white;
+  background-color: #fff;
 }
+
+.edit-button svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #3495df;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.delete-button svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #e64c4c;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
 
 .delete-dialog {
   position: fixed;
