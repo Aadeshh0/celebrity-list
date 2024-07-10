@@ -10,6 +10,8 @@
 .user-list {
   max-width: 600px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .search-bar {
@@ -20,6 +22,12 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f7f7f7;
+}
+
+.search-bar:focus {
+  border-color: #aeaeae;
+  outline: none;
+  box-shadow: 0 0 5px rgba(146, 146, 146, 0.5);
 }
 
 .accordion-item {
@@ -139,16 +147,18 @@
   max-width: 400px;
   width: 100%;
   box-sizing: border-box;
+  text-align: left;
   color: black; 
 }
 
 .delete-dialog p {
   margin-bottom: 20px;
   font-size: 16px;
+  margin-left: 8px;
 }
 
+
 .delete-dialog button {
-  margin-right: 10px;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -159,7 +169,6 @@
 .delete-dialog button:last-child {
   background-color: #f44336;
   color: white;
-  margin-right: 0;
 }
 
 .delete-dialog .cancel-button {

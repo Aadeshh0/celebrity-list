@@ -113,12 +113,15 @@ const AccordionItem: React.FC<{ user: User }> = ({ user }) => {
         </div>
       )}
       {showDeleteDialog && (
-        <div className="delete-dialog">
-        <p>Are you sure you want to delete?</p>
-        <button className="cancel-button" onClick={() => setShowDeleteDialog(false)}>Cancel</button>
-        <button onClick={handleDelete}>Delete</button>
+         <div className="delete-dialog">
+          <p>Are you sure you want to delete?</p>
+          <div className="button-group">
+          <button className="cancel-button" onClick={() => setShowDeleteDialog(false)}>Cancel</button>
+          <button onClick={handleDelete}>Delete</button>
+        </div>
       </div>
       )}
+
 
     </div>
   );
